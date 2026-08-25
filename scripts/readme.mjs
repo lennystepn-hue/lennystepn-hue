@@ -73,7 +73,7 @@ ${links.map(([src, href, alt]) => `<a href="${href}"><img src="${src}" alt="${al
 
 <div align="center">
 
-${img('assets/player.svg', `Player card: level ${d.repoCount}, score ${d.contributions.total}, ${d.contributions.commits} commits in the last year`)}
+${img('assets/player.svg', `Player card: level ${d.repoCount}, score ${d.contributions.total}, active on ${d.contributions.activeDays} days in the last year`)}
 
 </div>
 
@@ -101,7 +101,7 @@ ${img('assets/select.svg', `Featured projects: ${d.featured.map((p) => p.name).j
 
 <div align="center">
 
-${img('assets/grid.svg', `Contribution map: ${d.contributions.total} contributions across ${d.contributions.reposContributed} repositories in the last year`)}
+${img('assets/grid.svg', `Contribution map: ${d.contributions.total} contributions in the last year, active on ${d.contributions.activeDays} days`)}
 
 </div>
 

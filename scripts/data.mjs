@@ -254,6 +254,9 @@ export async function fetchProfile(login, token) {
 
   const totalStars = repos.reduce((a, r) => a + r.stargazerCount, 0);
   const totalForks = repos.reduce((a, r) => a + r.forkCount, 0);
+  const languageCount = new Set(
+    repos.flatMap((r) => (r.languages?.edges ?? []).map((e) => e.node.name)),
+  ).size;
 
   return {
     login: user.login,
@@ -271,18 +274,27 @@ export async function fetchProfile(login, token) {
     repoCount: repos.length,
     totalStars,
     totalForks,
+    languageCount,
 
     contributions: {
       total: calendarTotal,
+      bestDay: Math.max(0, ...days.map((d) => d.count)),
+      activeDays: days.filter((d) => d.count > 0).length,
+      totalDays: days.length,
+      perWeek: Math.round(calendarTotal / Math.max(1, days.length / 7)),
+      source: calendarSource,
+
+      // Everything above is derived from the calendar and is therefore identical
+      // no matter which token ran the job. The three counts below come from
+      // GraphQL and are NOT: a repo-scoped workflow token sees public activity
+      // only, while a token with `read:user` also sees private. Displaying them
+      // would make the profile's figures lurch every time the schedule ran, so
+      // they are kept for reference and deliberately not rendered.
       commits: cc.totalCommitContributions,
       prs: cc.totalPullRequestContributions,
       issues: cc.totalIssueContributions,
       reviews: cc.totalPullRequestReviewContributions,
       reposContributed: cc.totalRepositoriesWithContributedCommits,
-      bestDay: Math.max(0, ...days.map((d) => d.count)),
-      activeDays: days.filter((d) => d.count > 0).length,
-      totalDays: days.length,
-      source: calendarSource,
     },
 
     weeks,

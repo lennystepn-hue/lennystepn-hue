@@ -99,10 +99,10 @@ export function renderHero(d) {
 
   const chips = [
     ['PROJECTS', String(d.repoCount)],
-    ['COMMITS', compact(d.contributions.commits)],
+    ['CONTRIBUTIONS', compact(d.contributions.total)],
     ['STARS', String(d.totalStars)],
   ];
-  const chipW = 176;
+  const chipW = 186;
   const chipGap = 18;
   const chipsTotal = chips.length * chipW + (chips.length - 1) * chipGap;
   const chipX0 = Math.round((W - chipsTotal) / 2);
@@ -114,7 +114,7 @@ export function renderHero(d) {
   return [
     svgOpen(W, H, {
       title: `${d.name} — GitHub profile`,
-      desc: `An arcade cabinet in attract mode. ${d.repoCount} public projects, ${d.contributions.commits} commits in the last year, ${d.totalStars} stars.`,
+      desc: `An arcade cabinet in attract mode. ${d.repoCount} public projects, ${d.contributions.total} contributions in the last year, ${d.totalStars} stars.`,
     }),
     baseStyle(),
     commonDefs({ glowRadius: 2.6 }),
@@ -205,13 +205,18 @@ export function renderPlayer(d) {
   const W = 900;
   const H = 296;
 
-  // Four hard counts rather than ratio meters. A "3 of 30 days" bar is an
+  // Four hard counts rather than ratio meters -- a "3 of 30 days" bar is an
   // accurate way to make a year of real output look like an idle account.
+  //
+  // Every figure here is derived from the contribution calendar, so it reads the
+  // same whoever generated it. The commit/PR/issue split would be the obvious
+  // choice, but GraphQL reports those relative to the requesting token, and the
+  // nightly workflow's token sees several hundred fewer than a local one.
   const stats = [
-    ['COMMITS', compact(d.contributions.commits), C.green],
-    ['PULL REQS', compact(d.contributions.prs), C.blue],
-    ['ISSUES', compact(d.contributions.issues), C.magenta],
-    ['BEST DAY', compact(d.contributions.bestDay), C.amber],
+    ['ACTIVE DAYS', String(d.contributions.activeDays), C.green],
+    ['BEST DAY', String(d.contributions.bestDay), C.amber],
+    ['LANGUAGES', String(d.languageCount), C.magenta],
+    ['PER WEEK', String(d.contributions.perWeek), C.blue],
   ];
   const statW = 196;
   const statGap = 12;
@@ -545,7 +550,7 @@ export function renderGrid(d) {
   return [
     svgOpen(W, H, {
       title: 'Contribution map',
-      desc: `${d.contributions.total} contributions over the last year across ${d.contributions.reposContributed} repositories.`,
+      desc: `${d.contributions.total} contributions over the last year, active on ${d.contributions.activeDays} days.`,
     }),
     baseStyle(),
     commonDefs(),
@@ -555,7 +560,7 @@ export function renderGrid(d) {
 
     textSvg('CONTRIBUTION MAP', { x: 16, y: 18, scale: 3, fill: C.amber }),
     textSvgRight(
-      `${d.contributions.total} CONTRIBUTIONS  ·  ${d.contributions.reposContributed} REPOS`,
+      `${d.contributions.total} CONTRIBUTIONS  ·  ${d.contributions.activeDays} ACTIVE DAYS`,
       { rx: W - 16, y: 22, scale: 2, fill: C.dim },
     ),
 

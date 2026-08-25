@@ -84,6 +84,18 @@ graph a visitor sees means the profile can never contradict itself, and it picks
 up private contributions automatically if the account owner chooses to publish
 them.
 
+**No rendered figure may depend on which token generated it.** This follows from
+the point above and cost a redesign to get right. The obvious stats to show are
+the commit / pull request / issue split, and GraphQL hands them over readily —
+but it reports them relative to the caller. A token with `read:user` scope sees
+1039 commits where the workflow's repo-scoped token sees 746, so those numbers
+would have flipped back and forth on every scheduled run, and "1244
+contributions" sitting next to "746 commits" does not even cohere. The cards now
+show only what the calendar and the public repository list can supply: active
+days, best day, longest streak, contributions per week. The GraphQL counts are
+still fetched, and `data.mjs` marks them as deliberately unrendered so nobody
+reaches for them again.
+
 **Randomness is seeded.** Star positions and the digit decoys come from a
 seeded PRNG, so re-running the generator produces byte-identical output when the
 data has not changed. Without that, every nightly run would commit a diff full
