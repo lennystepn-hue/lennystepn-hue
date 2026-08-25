@@ -1,0 +1,14 @@
+{
+  "name": "lennystepn-hue-profile",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Generates the animated arcade-cabinet assets for the lennystepn-hue GitHub profile README.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/generate.mjs",
+    "build:cached": "node scripts/generate.mjs --cached"
+  }
+}

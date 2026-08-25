@@ -1,0 +1,10 @@
+node_modules/
+
+# Snapshot for offline re-rendering; regenerated on every live build.
+.cache/
+
+# Local asset preview, rebuilt by `npm run build`.
+preview.html
+
+# Working notes for the design pass; the conclusions live in HOW-IT-WORKS.md.
+.impeccable.md

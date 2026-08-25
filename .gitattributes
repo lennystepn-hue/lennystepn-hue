@@ -1,0 +1,6 @@
+# Normalise to LF everywhere.
+#
+# The refresh workflow regenerates the assets on Linux. Without this, a repo
+# checked out on Windows writes CRLF, and every nightly run would see the whole
+# asset set as changed and commit a diff that contains nothing but line endings.
+* text=auto eol=lf
