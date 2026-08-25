@@ -37,8 +37,8 @@ export function esc(s) {
  */
 export function baseStyle(extra = '') {
   return `<style>
-    .blink   { animation: blink 1.1s steps(1) infinite; }
-    .blink-s { animation: blink 1.9s steps(1) infinite; }
+    .blink   { animation: blink 1.4s steps(1) infinite; }
+    .blink-s { animation: blink 2.2s steps(1) infinite; }
     .twinkle { animation: twinkle 3s ease-in-out infinite; }
     .fringe-r{ animation: fringe-r 4.2s ease-in-out infinite; }
     .fringe-b{ animation: fringe-b 4.2s ease-in-out infinite; }
@@ -52,7 +52,9 @@ export function baseStyle(extra = '') {
     .bob     { animation: bob 1.6s steps(2) infinite; }
     .glowpulse { animation: glowpulse 3.4s ease-in-out infinite; }
 
-    @keyframes blink   { 0%,55% { opacity:1 } 56%,100% { opacity:0 } }
+    /* Lit far longer than it is dark. An even duty cycle means a screenshot --
+       or a glance -- catches an empty gap almost half the time. */
+    @keyframes blink   { 0%,74% { opacity:1 } 75%,100% { opacity:0 } }
     @keyframes twinkle { 0%,100% { opacity:.25 } 50% { opacity:1 } }
     @keyframes fringe-r{ 0%,100% { transform:translateX(-1.5px) } 50% { transform:translateX(-3px) } }
     @keyframes fringe-b{ 0%,100% { transform:translateX(1.5px) }  50% { transform:translateX(3px) } }
