@@ -1,34 +1,123 @@
 /**
- * Palette and shared constants.
+ * Palettes, language colours and small formatting helpers.
  *
- * Deliberately warm. The obvious choice for "retro tech" is cyan-and-violet on
- * black, which is also the most recognisable signature of machine-generated
- * design work. Real arcade cabinets were lit by amber marquees and warm
- * phosphor, so that is what this uses: amber leads, red and pink accent, and
- * green is held back for live data so it never reads as decoration.
+ * `C` is a live object rather than a frozen constant. `applyTheme()` swaps its
+ * contents once at start-up and every card reads it at render time, which keeps
+ * theming out of the drawing code entirely. Anything that captures a colour at
+ * module load would freeze the default theme, so don't.
  */
 
-export const C = {
-  bg: '#14101f',
-  bgDeep: '#0d0a16',
-  panel: '#1d1730',
-  panelLit: '#272040',
-  ink: '#f4ecd8',
-  dim: '#7a6f9b',
-  dimmer: '#4a4270',
+/**
+ * Four complete palettes. Each is warm or cool on purpose and none of them is
+ * the cyan-and-violet-on-black that every generated "retro tech" design lands
+ * on. `primary` leads; `green` is reserved for live data so it never reads as
+ * decoration; `ramp` is the five-step contribution heat scale; `marquee` is the
+ * three-stop gradient behind the hero title.
+ */
+export const PALETTES = {
+  /** Arcade marquee. Amber-led, the default. */
+  amber: {
+    bg: '#14101f',
+    bgDeep: '#0d0a16',
+    panel: '#1d1730',
+    panelLit: '#272040',
+    ink: '#f4ecd8',
+    dim: '#7a6f9b',
+    dimmer: '#4a4270',
+    primary: '#ffb627',
+    primaryDeep: '#e08700',
+    red: '#ef3d3d',
+    magenta: '#ff5da2',
+    green: '#7ee787',
+    blue: '#4d9bff',
+    violet: '#b06cff',
+    claude: '#e0785a',
+    ramp: ['#231d3a', '#5c4a1f', '#a8791f', '#ffb627', '#ffe9a8'],
+    marquee: ['#fff4d6', '#ffb627', '#e08700'],
+  },
 
-  amber: '#ffb627',
-  amberDeep: '#e08700',
-  red: '#ef3d3d',
-  magenta: '#ff5da2',
-  green: '#7ee787',
-  blue: '#4d9bff',
-  violet: '#b06cff',
+  /** Green CRT terminal. */
+  phosphor: {
+    bg: '#0b1410',
+    bgDeep: '#060d0a',
+    panel: '#12211a',
+    panelLit: '#1b2f24',
+    ink: '#e2f5e8',
+    dim: '#6f9a83',
+    dimmer: '#3d5c4c',
+    primary: '#5ef78b',
+    primaryDeep: '#1f9b52',
+    red: '#ff6b5c',
+    magenta: '#c98bff',
+    green: '#5ef78b',
+    blue: '#54d6ff',
+    violet: '#9d7bff',
+    claude: '#e0785a',
+    ramp: ['#16261d', '#1f5c38', '#2f9b57', '#5ef78b', '#c8ffd9'],
+    marquee: ['#e8ffef', '#5ef78b', '#1f9b52'],
+  },
+
+  /** Hot pink cabinet lighting. */
+  synth: {
+    bg: '#150d1f',
+    bgDeep: '#0d0714',
+    panel: '#1f1430',
+    panelLit: '#2b1c42',
+    ink: '#f6e9ff',
+    dim: '#9b7ab8',
+    dimmer: '#5c4478',
+    primary: '#ff5da2',
+    primaryDeep: '#c72d76',
+    red: '#ff4d6d',
+    magenta: '#ff8ac4',
+    green: '#6ef7c4',
+    blue: '#6b8cff',
+    violet: '#c77dff',
+    claude: '#e0785a',
+    ramp: ['#261a38', '#5c2049', '#a82f74', '#ff5da2', '#ffc4de'],
+    marquee: ['#ffe0f0', '#ff5da2', '#c72d76'],
+  },
+
+  /** Cool blue tube. */
+  ice: {
+    bg: '#0d131f',
+    bgDeep: '#070b14',
+    panel: '#141d2e',
+    panelLit: '#1e2a40',
+    ink: '#e6f1ff',
+    dim: '#7089a8',
+    dimmer: '#42546e',
+    primary: '#4dd0ff',
+    primaryDeep: '#1a86b8',
+    red: '#ff6b6b',
+    magenta: '#a78bfa',
+    green: '#5eead4',
+    blue: '#6ba8ff',
+    violet: '#a78bfa',
+    claude: '#e0785a',
+    ramp: ['#1a2436', '#1c4f6b', '#2a86ad', '#4dd0ff', '#c4edff'],
+    marquee: ['#eaf8ff', '#4dd0ff', '#1a86b8'],
+  },
 };
+
+export const THEME_NAMES = Object.keys(PALETTES);
+
+/** The live palette. Read it at call time; never destructure it at import. */
+export const C = { ...PALETTES.amber };
+
+export function applyTheme(name = 'amber') {
+  const palette = PALETTES[name];
+  if (!palette) {
+    throw new Error(`Unknown theme "${name}". Available: ${THEME_NAMES.join(', ')}`);
+  }
+  for (const key of Object.keys(C)) delete C[key];
+  Object.assign(C, palette);
+  return C;
+}
 
 /**
  * GitHub's own language colours, so the inventory slots are recognisable at a
- * glance. Unknown languages fall back to a stable pick from the arcade palette
+ * glance. Unknown languages fall back to a stable pick from the active palette
  * rather than a flat grey, so a new language never looks like an error state.
  */
 const LANGUAGE_COLORS = {
@@ -70,16 +159,33 @@ const LANGUAGE_COLORS = {
   Handlebars: '#f7931e',
   Blade: '#f7523f',
   SQL: '#e38c00',
+  Clojure: '#db5855',
+  Erlang: '#B83998',
+  OCaml: '#ef7a08',
+  Scala: '#c22d40',
+  Perl: '#0298c3',
+  R: '#198CE7',
+  Julia: '#a270ba',
+  Crystal: '#000100',
+  Nim: '#ffc200',
+  'Objective-C': '#438eff',
+  Assembly: '#6E4C13',
+  CMake: '#DA3434',
+  Twig: '#c1d026',
+  Vim_Script: '#199f4b',
+  'Emacs Lisp': '#c065db',
+  TeX: '#3D6117',
   Procfile: '#a0a0a0',
 };
 
-const FALLBACK_COLORS = [C.amber, C.magenta, C.green, C.blue, C.violet, C.red];
-
 export function languageColor(name) {
   if (LANGUAGE_COLORS[name]) return LANGUAGE_COLORS[name];
+  // Read the palette at call time, not at module load: applyTheme() swaps these
+  // values, and a list captured at import would freeze the default theme's.
+  const fallbacks = [C.primary, C.magenta, C.green, C.blue, C.violet, C.red];
   let hash = 0;
   for (const ch of String(name)) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
-  return FALLBACK_COLORS[hash % FALLBACK_COLORS.length];
+  return fallbacks[hash % fallbacks.length];
 }
 
 /**
@@ -107,6 +213,8 @@ const LANGUAGE_ABBR = {
   'Jupyter Notebook': 'NB',
   PowerShell: 'PS',
   Handlebars: 'HBS',
+  'Objective-C': 'OBJC',
+  'Emacs Lisp': 'ELISP',
 };
 
 export function languageAbbr(name) {

@@ -106,9 +106,9 @@ export function commonDefs({ scanStep = 3, glowRadius = 2.4 } = {}) {
       <rect width="1" height="8" fill="${C.blue}" opacity=".05"/>
     </pattern>
     <linearGradient id="marquee" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff4d6"/>
-      <stop offset="42%" stop-color="${C.amber}"/>
-      <stop offset="100%" stop-color="${C.amberDeep}"/>
+      <stop offset="0" stop-color="${C.marquee[0]}"/>
+      <stop offset="42%" stop-color="${C.marquee[1]}"/>
+      <stop offset="100%" stop-color="${C.marquee[2]}"/>
     </linearGradient>
     <linearGradient id="beamgrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
@@ -150,7 +150,7 @@ export function starfield(w, h, { count = 46, seed = 20250811, exclude = null } 
     const size = rnd() < 0.14 ? 2 : 1;
     const delay = (rnd() * 3).toFixed(2);
     const tone = rnd();
-    const fill = tone < 0.7 ? C.dim : tone < 0.9 ? C.ink : C.amber;
+    const fill = tone < 0.7 ? C.dim : tone < 0.9 ? C.ink : C.primary;
     out.push(
       `<rect class="twinkle" x="${x}" y="${y}" width="${size}" height="${size}" fill="${fill}" style="animation-delay:${delay}s"/>`,
     );
@@ -167,7 +167,7 @@ export function panel(x, y, w, h, opts = {}) {
   const {
     fill = C.panel,
     border = C.dimmer,
-    accent = C.amber,
+    accent = C.primary,
     t = 2,
     corner = 10,
     label = null,
@@ -265,7 +265,7 @@ export function digitRoll(value, opts = {}) {
     y = 0,
     scale = 4,
     tracking = 1,
-    fill = C.amber,
+    fill = C.primary,
     width: forceWidth = null,
     spins = 7,
     delay = 0,

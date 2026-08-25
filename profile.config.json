@@ -1,0 +1,48 @@
+{
+  "login": "lennystepn-hue",
+
+  "tagline": "BUILDING AUTONOMOUS AGENTS THAT ACTUALLY SHIP",
+  "playerClass": "AGENT ENGINEER",
+  "theme": "amber",
+
+  "cards": ["hero", "player", "stack", "select", "grid", "footer"],
+
+  "featured": {
+    "count": 6,
+    "pin": [],
+    "exclude": []
+  },
+
+  "languages": {
+    "count": 8,
+    "exclude": []
+  },
+
+  "links": {
+    "website": true,
+    "x": true,
+    "followers": true,
+    "stars": true
+  },
+
+  "about": {
+    "heading": "About",
+    "body": [
+      "I build infrastructure for autonomous AI agents, and small products that get from idea to production fast. {{repoCount}} public repositories in my first year on GitHub, most of them running somewhere real rather than sitting in a drawer.",
+      "The work falls into two piles.",
+      "**Agent infrastructure** — making it practical, and safe, to actually run AI agents. {{repo:clawshield}} is a security layer for them: one binary, zero config, 50+ checks. {{repo:vibecell}} keeps the state of everything you are shipping in one place and wires it straight into Claude Code over MCP. {{repo:butlr-openclaw-platform}} turns OpenClaw into a managed service, with dedicated VMs and billing attached.",
+      "**Products with a job to do** — {{repo:schichtplaner}} is open-source shift planning with real-time collaboration and self-hosting. {{repo:agentcheck}} tells you whether ChatGPT, Claude and Perplexity can find your website at all. {{repo:MenuMagic}} turns a photo of a restaurant menu into print-ready, allergen-compliant, multilingual designs.",
+      "Mostly {{topLanguages}}. German, based in Portugal, working in English and German."
+    ]
+  },
+
+  "currently": {
+    "heading": "Currently",
+    "body": [
+      "Building agent tooling in the open, and taking on selected freelance work through {{site}}. If any of this is useful to you, issues and pull requests are genuinely welcome — most of these repositories are one contributor away from being a good deal better."
+    ]
+  },
+
+  "showTemplateCredit": true,
+  "templateRepo": "lennystepn-hue/lennystepn-hue"
+}

@@ -15,16 +15,21 @@ break because of someone else's outage, and it looks like nothing else.
 ## The pieces
 
 ```
+profile.config.json   name, tagline, theme, prose — the only file most edits touch
 scripts/
+  config.mjs      loads and validates that file, with errors that name the fix
   pixelfont.mjs   a 5x7 bitmap font, drawn by hand, rendered to SVG paths
-  sprites.mjs     the agent and the ghost, as layered bitmaps
-  theme.mjs       palette, language colours, deterministic PRNG
+  sprites.mjs     the agent, the ghost and Claude's mascot, as layered bitmaps
+  theme.mjs       four palettes, language colours, deterministic PRNG
   fx.mjs          CRT treatment, panels, meters, the digit roll
-  cards.mjs       the five compositions
+  cards.mjs       the six compositions
   data.mjs        one GraphQL call plus the public contribution graph
   readme.mjs      README.md, built from the same snapshot as the cards
   generate.mjs    ties it together
 ```
+
+Using this for your own profile is [SETUP.md](SETUP.md); handing the job to an
+AI assistant is [AGENTS.md](AGENTS.md).
 
 Run it locally:
 
@@ -62,6 +67,14 @@ live data so it never reads as decoration.
 
 One rule governs the rest: **the hero is the only climax.** It powers on like a
 tube warming up; everything below it is quieter on purpose.
+
+Three more palettes ship alongside it — `phosphor` (green terminal), `synth`
+(hot pink) and `ice` (cool blue) — selected with one line in the config. Each is
+a complete set rather than a hue rotation, because a palette that works is a set
+of relationships, not a filter. `C` in `theme.mjs` is a live object that
+`applyTheme()` swaps at start-up, so no drawing code knows themes exist.
+Anything that captures a colour at module load would silently freeze the
+default; that is why `languageColor` builds its fallback list per call.
 
 ## Decisions worth knowing about
 

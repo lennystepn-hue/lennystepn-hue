@@ -92,7 +92,7 @@ export function agentSprite({
   x = 0,
   y = 0,
   scale = 4,
-  body = C.amber,
+  body = C.primary,
   cut = C.bgDeep,
   pupil = C.green,
   className,
@@ -176,6 +176,63 @@ export const GHOST_W = 10;
 export const GHOST_H = 10;
 
 // ---------------------------------------------------------------------------
+// Claude's mascot, redrawn on this cabinet's pixel grid: blocky head, stubby
+// arms out to the sides, four legs. Kept to the same body/cut construction as
+// the others so it sits on the same grid rather than looking pasted in.
+//
+// The body is eleven columns wide because four legs need four blocks and three
+// gaps between them; a narrower body forces the legs off-centre.
+// ---------------------------------------------------------------------------
+
+const CLAUDE_BODY = [
+  '..###########..',
+  '..###########..',
+  '..###########..',
+  '..###########..',
+  '###############',
+  '###############',
+  '..###########..',
+  '..##.##.##.##..',
+  '..##.##.##.##..',
+  '..##.##.##.##..',
+];
+
+// Set wide, one column in from each edge of the head. Bringing them toward the
+// middle turns the face into a snout and stops reading as the mascot.
+const CLAUDE_EYES = [
+  '...............',
+  '...##.....##...',
+  '...##.....##...',
+  '...............',
+  '...............',
+  '...............',
+  '...............',
+  '...............',
+  '...............',
+  '...............',
+];
+
+export const CLAUDE_W = 15;
+export const CLAUDE_H = 10;
+
+export function claudeSprite({
+  x = 0,
+  y = 0,
+  scale = 4,
+  body = C.claude,
+  eyes = C.bgDeep,
+  className,
+  style,
+} = {}) {
+  return (
+    `<g${className ? ` class="${className}"` : ''}${style ? ` style="${style}"` : ''}>` +
+    bitmapSvg(CLAUDE_BODY, { x, y, scale, fill: body }) +
+    bitmapSvg(CLAUDE_EYES, { x, y, scale, fill: eyes }) +
+    `</g>`
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Pellets for the agent to run along, and a coin for the credits line.
 // ---------------------------------------------------------------------------
 
@@ -196,6 +253,6 @@ const COIN = [
   '.####.',
 ];
 
-export function coinSprite({ x = 0, y = 0, scale = 2, fill = C.amber, className, style } = {}) {
+export function coinSprite({ x = 0, y = 0, scale = 2, fill = C.primary, className, style } = {}) {
   return bitmapSvg(COIN, { x, y, scale, fill, className, style });
 }

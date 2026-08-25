@@ -175,14 +175,18 @@ function computeStreaks(days) {
   return { current, longest, activeLast30, windowDays: last30.length };
 }
 
-function aggregateLanguages(repos, limit = 8) {
+function aggregateLanguages(repos, { limit = 8, exclude = [] } = {}) {
+  const skip = new Set(exclude.map((s) => s.toLowerCase()));
   const totals = new Map();
   for (const repo of repos) {
     for (const edge of repo.languages?.edges ?? []) {
       const name = edge.node.name;
+      if (skip.has(name.toLowerCase())) continue;
       totals.set(name, (totals.get(name) ?? 0) + edge.size);
     }
   }
+  // Percentages are of the languages that survived the exclude list, so a bar
+  // chart of five entries still adds up to something close to 100.
   const grand = [...totals.values()].reduce((a, b) => a + b, 0) || 1;
   return [...totals.entries()]
     .map(([name, bytes]) => ({
@@ -199,9 +203,15 @@ function aggregateLanguages(repos, limit = 8) {
  * Projects worth putting on a cabinet screen: described, not archived, ranked by
  * stars but with recency breaking ties so the shelf stays alive.
  */
-function pickFeatured(repos, limit = 6) {
+function pickFeatured(repos, { limit = 6, pin = [], exclude = [] } = {}) {
+  const pinned = pin.map((s) => s.toLowerCase());
+  const skip = new Set(exclude.map((s) => s.toLowerCase()));
+
   return repos
-    .filter((r) => r.description && !r.isArchived)
+    .filter((r) => !skip.has(r.name.toLowerCase()))
+    // Pinned repositories bypass the "must have a description" rule: naming one
+    // explicitly is a stronger signal than any heuristic here.
+    .filter((r) => (r.description && !r.isArchived) || pinned.includes(r.name.toLowerCase()))
     .map((r) => ({
       name: r.name,
       description: r.description,
@@ -212,7 +222,16 @@ function pickFeatured(repos, limit = 6) {
       pushedAt: r.pushedAt,
       topics: (r.repositoryTopics?.nodes ?? []).map((n) => n.topic.name),
     }))
-    .sort((a, b) => b.stars - a.stars || new Date(b.pushedAt) - new Date(a.pushedAt))
+    .sort((a, b) => {
+      const ap = pinned.indexOf(a.name.toLowerCase());
+      const bp = pinned.indexOf(b.name.toLowerCase());
+      if (ap !== -1 || bp !== -1) {
+        if (ap === -1) return 1;
+        if (bp === -1) return -1;
+        return ap - bp;
+      }
+      return b.stars - a.stars || new Date(b.pushedAt) - new Date(a.pushedAt);
+    })
     .slice(0, limit);
 }
 
@@ -222,7 +241,7 @@ function levelFor(count, max) {
   return Math.min(4, Math.ceil((count / Math.max(1, max)) * 4));
 }
 
-export async function fetchProfile(login, token) {
+export async function fetchProfile(login, token, cfg = {}) {
   const user = await graphql(login, token);
   const repos = user.repositories.nodes ?? [];
   const cc = user.contributionsCollection;
@@ -299,8 +318,15 @@ export async function fetchProfile(login, token) {
 
     weeks,
     streak: computeStreaks(days),
-    languages: aggregateLanguages(repos),
-    featured: pickFeatured(repos),
+    languages: aggregateLanguages(repos, {
+      limit: cfg.languages?.count ?? 8,
+      exclude: cfg.languages?.exclude ?? [],
+    }),
+    featured: pickFeatured(repos, {
+      limit: cfg.featured?.count ?? 6,
+      pin: cfg.featured?.pin ?? [],
+      exclude: cfg.featured?.exclude ?? [],
+    }),
 
     generatedAt: new Date().toISOString(),
   };

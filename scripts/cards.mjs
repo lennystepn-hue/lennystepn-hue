@@ -27,7 +27,7 @@ import {
   segBar,
   digitRoll,
 } from './fx.mjs';
-import { agentSprite, ghostSprite, pelletRow, AGENT_H } from './sprites.mjs';
+import { agentSprite, ghostSprite, claudeSprite, pelletRow, AGENT_H, CLAUDE_H } from './sprites.mjs';
 
 // ---------------------------------------------------------------------------
 // Text helpers
@@ -70,7 +70,7 @@ function clampLines(lines, max) {
 }
 
 /** A bracketed readout: dim label above, bright value below. */
-function chip(x, y, w, h, label, value, { accent = C.amber, valueScale = 3 } = {}) {
+function chip(x, y, w, h, label, value, { accent = C.primary, valueScale = 3 } = {}) {
   return [
     `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C.panel}"/>`,
     `<rect x="${x}" y="${y}" width="3" height="${h}" fill="${accent}"/>`,
@@ -83,19 +83,23 @@ function chip(x, y, w, h, label, value, { accent = C.amber, valueScale = 3 } = {
 // 1. Hero — the cabinet in attract mode
 // ---------------------------------------------------------------------------
 
-export function renderHero(d) {
+export function renderHero(d, cfg = {}) {
   const W = 900;
   const H = 360;
 
+  // Both the name and the tagline are author-supplied and can be any length, so
+  // each picks the largest size that still fits rather than trusting a constant.
   const name = sanitize(d.name);
-  const titleScale = name.length > 15 ? 8 : 10;
+  let titleScale = 10;
+  while (titleScale > 4 && textWidth(name, titleScale, 1) > W - 80) titleScale -= 1;
   const titleW = textWidth(name, titleScale, 1);
   const titleX = Math.round((W - titleW) / 2);
   const titleY = 70;
   const titleH = CHAR_H * titleScale;
 
-  const tagline = 'BUILDING AUTONOMOUS AGENTS THAT ACTUALLY SHIP';
-  const tagScale = 3;
+  const tagline = sanitize(cfg.tagline ?? 'BUILDING THINGS THAT SHIP');
+  let tagScale = 3;
+  while (tagScale > 1 && textWidth(tagline, tagScale, 1) > W - 60) tagScale -= 1;
 
   const chips = [
     ['PROJECTS', String(d.repoCount)],
@@ -114,7 +118,7 @@ export function renderHero(d) {
   return [
     svgOpen(W, H, {
       title: `${d.name} — GitHub profile`,
-      desc: `An arcade cabinet in attract mode. ${d.repoCount} public projects, ${d.contributions.total} contributions in the last year, ${d.totalStars} stars.`,
+      desc: `An arcade cabinet in attract mode. ${tagline}. ${d.repoCount} public projects, ${d.contributions.total} contributions in the last year, ${d.totalStars} stars.`,
     }),
     baseStyle(),
     commonDefs({ glowRadius: 2.6 }),
@@ -143,9 +147,9 @@ export function renderHero(d) {
     `<use href="#ttl" fill="url(#marquee)" filter="url(#bloom)"/>`,
 
     // Rule with end-notches, like a marquee bezel.
-    `<rect x="210" y="${titleY + titleH + 18}" width="480" height="2" fill="${C.amberDeep}"/>`,
-    `<rect x="204" y="${titleY + titleH + 14}" width="4" height="10" fill="${C.amber}"/>`,
-    `<rect x="692" y="${titleY + titleH + 14}" width="4" height="10" fill="${C.amber}"/>`,
+    `<rect x="210" y="${titleY + titleH + 18}" width="480" height="2" fill="${C.primaryDeep}"/>`,
+    `<rect x="204" y="${titleY + titleH + 14}" width="4" height="10" fill="${C.primary}"/>`,
+    `<rect x="692" y="${titleY + titleH + 14}" width="4" height="10" fill="${C.primary}"/>`,
 
     `<g class="type">${textSvgCentered(tagline, {
       cx: W / 2,
@@ -158,7 +162,7 @@ export function renderHero(d) {
     chips
       .map(([label, value], i) =>
         chip(chipX0 + i * (chipW + chipGap), chipY, chipW, 54, label, value, {
-          accent: [C.amber, C.magenta, C.green][i],
+          accent: [C.primary, C.magenta, C.green][i],
         }),
       )
       .join(''),
@@ -171,7 +175,7 @@ export function renderHero(d) {
       cx: W / 2,
       y: 284,
       scale: 3,
-      fill: C.amber,
+      fill: C.primary,
     })}</g>`,
 
     `<rect x="0" y="${groundY}" width="${W}" height="2" fill="${C.dimmer}" opacity=".7"/>`,
@@ -201,7 +205,7 @@ export function renderHero(d) {
 // 2. Player card — the character sheet
 // ---------------------------------------------------------------------------
 
-export function renderPlayer(d) {
+export function renderPlayer(d, cfg = {}) {
   const W = 900;
   const H = 296;
 
@@ -214,7 +218,7 @@ export function renderPlayer(d) {
   // nightly workflow's token sees several hundred fewer than a local one.
   const stats = [
     ['ACTIVE DAYS', String(d.contributions.activeDays), C.green],
-    ['BEST DAY', String(d.contributions.bestDay), C.amber],
+    ['BEST DAY', String(d.contributions.bestDay), C.primary],
     ['LANGUAGES', String(d.languageCount), C.magenta],
     ['PER WEEK', String(d.contributions.perWeek), C.blue],
   ];
@@ -286,9 +290,14 @@ export function renderPlayer(d) {
 
     // Identity
     textSvg('PLAYER', { x: identityX, y: 66, scale: 2, fill: C.dim }),
-    textSvg(d.name, { x: identityX, y: 84, scale: 4, fill: C.amber }),
+    textSvg(d.name, { x: identityX, y: 84, scale: 4, fill: C.primary }),
     textSvg('CLASS', { x: identityX, y: 128, scale: 2, fill: C.dim }),
-    textSvg('AGENT ENGINEER', { x: identityX, y: 146, scale: 3, fill: C.ink }),
+    textSvg(cfg.playerClass ?? 'SOFTWARE ENGINEER', {
+      x: identityX,
+      y: 146,
+      scale: 3,
+      fill: C.ink,
+    }),
     textSvg('HOME', { x: identityX, y: 176, scale: 2, fill: C.dim }),
     textSvg(home, { x: identityX, y: 192, scale: 2, fill: C.blue }),
 
@@ -308,7 +317,7 @@ export function renderPlayer(d) {
       x: scoreX,
       y: 84,
       scale: numScale,
-      fill: C.amber,
+      fill: C.primary,
       id: 'scr',
       seed: 29,
       delay: 220,
@@ -414,7 +423,7 @@ export function renderSelect(d) {
 
       const nameScale = sanitize(p.name).length > 17 ? 2 : 3;
       const descLines = clampLines(wrap(p.description, 32), 3);
-      const accent = [C.amber, C.magenta, C.green, C.blue, C.violet, C.red][i % 6];
+      const accent = [C.primary, C.magenta, C.green, C.blue, C.violet, C.red][i % 6];
 
       return [
         panel(cx, cy, cardW, cardH, { accent, corner: 8, t: 2 }),
@@ -442,7 +451,7 @@ export function renderSelect(d) {
               rx: cx + cardW - 16,
               y: cy + 116,
               scale: 2,
-              fill: C.amber,
+              fill: C.primary,
             })
           : textSvgRight('NEW', { rx: cx + cardW - 16, y: cy + 116, scale: 2, fill: C.green }),
       ].join('');
@@ -461,7 +470,7 @@ export function renderSelect(d) {
     `<rect width="${W}" height="${H}" fill="${C.bg}"/>`,
     starfield(W, H, { count: 30, seed: 31337 }),
 
-    textSvgCentered('SELECT YOUR GAME', { cx: W / 2, y: 26, scale: 4, fill: C.amber }),
+    textSvgCentered('SELECT YOUR GAME', { cx: W / 2, y: 26, scale: 4, fill: C.primary }),
     `<g class="blink-s">${textSvgCentered(
       `${projects.length} OF ${d.repoCount} CABINETS ON THE FLOOR  ·  INSERT COIN`,
       { cx: W / 2, y: 62, scale: 2, fill: C.dim },
@@ -475,11 +484,50 @@ export function renderSelect(d) {
 }
 
 // ---------------------------------------------------------------------------
+// 6. Credits strip
+// ---------------------------------------------------------------------------
+
+export function renderFooter(d, cfg = {}) {
+  const W = 900;
+  const H = 112;
+  const templateRepo = cfg.templateRepo ?? `${d.login}/${d.login}`;
+
+  const spriteScale = 5;
+  const spriteX = 44;
+  const spriteY = 26 + Math.round((72 - CLAUDE_H * spriteScale) / 2);
+
+  return [
+    svgOpen(W, H, {
+      title: 'Credits',
+      desc: `Built with Claude Code. Template available at github.com/${templateRepo}.`,
+    }),
+    baseStyle(),
+    commonDefs(),
+
+    `<g class="crt">`,
+    `<rect width="${W}" height="${H}" fill="${C.bg}"/>`,
+    starfield(W, H, { count: 14, seed: 606 }),
+    panel(16, 26, 868, 72, { label: 'CREDITS', accent: C.claude }),
+
+    claudeSprite({ x: spriteX, y: spriteY, scale: spriteScale, className: 'bob' }),
+
+    textSvg('BUILT WITH', { x: 130, y: 46, scale: 2, fill: C.dim }),
+    textSvg('CLAUDE CODE', { x: 130, y: 64, scale: 3, fill: C.claude }),
+
+    textSvgRight('USE THIS TEMPLATE', { rx: 856, y: 46, scale: 2, fill: C.dim }),
+    textSvgRight(`GITHUB.COM/${templateRepo}`, { rx: 856, y: 66, scale: 2, fill: C.blue }),
+
+    crtOverlay(W, H, { beam: false }),
+    `</g>`,
+    svgClose(),
+  ].join('');
+}
+
+// ---------------------------------------------------------------------------
 // 5. Contribution map
 // ---------------------------------------------------------------------------
 
-const RAMP = ['#231d3a', '#5c4a1f', '#a8791f', '#ffb627', '#ffe9a8'];
-const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const MONTHS =['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 export function renderGrid(d) {
   const W = 900;
@@ -503,7 +551,7 @@ export function renderGrid(d) {
           const x = originX + wi * pitch;
           const y = originY + day.weekday * pitch;
           const delay = wi * 11 + day.weekday * 4;
-          return `<rect class="rise" style="animation-delay:${delay}ms" x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${RAMP[level]}"/>`;
+          return `<rect class="rise" style="animation-delay:${delay}ms" x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${C.ramp[level]}"/>`;
         })
         .join(''),
     )
@@ -540,11 +588,11 @@ export function renderGrid(d) {
   const legendY = H - 26;
   const legend = [
     textSvg('LESS', { x: legendX, y: legendY, scale: 2, fill: C.dim }),
-    RAMP.map(
+    C.ramp.map(
       (col, i) =>
         `<rect x="${legendX + 46 + i * 14}" y="${legendY - 1}" width="11" height="11" fill="${col}"/>`,
     ).join(''),
-    textSvg('MORE', { x: legendX + 46 + RAMP.length * 14 + 6, y: legendY, scale: 2, fill: C.dim }),
+    textSvg('MORE', { x: legendX + 46 + C.ramp.length * 14 + 6, y: legendY, scale: 2, fill: C.dim }),
   ].join('');
 
   return [
@@ -558,7 +606,7 @@ export function renderGrid(d) {
     `<g class="crt">`,
     `<rect width="${W}" height="${H}" fill="${C.bg}"/>`,
 
-    textSvg('CONTRIBUTION MAP', { x: 16, y: 18, scale: 3, fill: C.amber }),
+    textSvg('CONTRIBUTION MAP', { x: 16, y: 18, scale: 3, fill: C.primary }),
     textSvgRight(
       `${d.contributions.total} CONTRIBUTIONS  ·  ${d.contributions.activeDays} ACTIVE DAYS`,
       { rx: W - 16, y: 22, scale: 2, fill: C.dim },
