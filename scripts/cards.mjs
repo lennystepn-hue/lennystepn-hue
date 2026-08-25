@@ -222,7 +222,27 @@ export function renderPlayer(d) {
   const agentH = AGENT_H * agentScale;
 
   const identityX = 190;
-  const numbersX = 610;
+
+  // The headline numbers grow as the account does: a four-digit score is 60%
+  // wider than a three-digit one, and a fixed origin sends it off the card the
+  // day it crosses 1000. Lay the pair out from the right edge instead, stepping
+  // the scale down until it fits the space the identity column leaves.
+  const numbersRight = 862;
+  const numbersLeft = 528;
+  const numberGap = 38;
+  const lvlText = String(d.repoCount);
+  const scoreText = String(d.contributions.total);
+
+  let numScale = 7;
+  while (
+    numScale > 4 &&
+    textWidth(lvlText, numScale, 1) + numberGap + textWidth(scoreText, numScale, 1) >
+      numbersRight - numbersLeft
+  ) {
+    numScale -= 1;
+  }
+  const scoreX = numbersRight - textWidth(scoreText, numScale, 1);
+  const lvlX = scoreX - numberGap - textWidth(lvlText, numScale, 1);
 
   const home = d.websiteUrl ? d.websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : d.login;
 
@@ -268,21 +288,21 @@ export function renderPlayer(d) {
     textSvg(home, { x: identityX, y: 192, scale: 2, fill: C.blue }),
 
     // Headline numbers, spun up like a cabinet tallying a score
-    textSvg('LVL', { x: numbersX, y: 66, scale: 2, fill: C.dim }),
-    digitRoll(d.repoCount, {
-      x: numbersX,
+    textSvg('LVL', { x: lvlX, y: 66, scale: 2, fill: C.dim }),
+    digitRoll(lvlText, {
+      x: lvlX,
       y: 84,
-      scale: 7,
+      scale: numScale,
       fill: C.green,
       id: 'lvl',
       seed: 11,
       delay: 120,
     }),
-    textSvg('SCORE', { x: numbersX + 130, y: 66, scale: 2, fill: C.dim }),
-    digitRoll(d.contributions.total, {
-      x: numbersX + 130,
+    textSvg('SCORE', { x: scoreX, y: 66, scale: 2, fill: C.dim }),
+    digitRoll(scoreText, {
+      x: scoreX,
       y: 84,
-      scale: 7,
+      scale: numScale,
       fill: C.amber,
       id: 'scr',
       seed: 29,

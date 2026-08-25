@@ -125,12 +125,18 @@ export function mulberry32(seed) {
   };
 }
 
-/** 847 -> "847", 1240 -> "1.2K", 1240000 -> "1.2M" */
+/**
+ * 847 -> "847", 1046 -> "1046", 12345 -> "12.3K", 1240000 -> "1.2M"
+ *
+ * Abbreviation only starts at five figures. Rounding 1046 commits to "1K"
+ * reads as an estimate and throws away the precision that makes the number
+ * convincing -- and every figure on this profile fits its box at full length
+ * well past ten thousand.
+ */
 export function compact(n) {
   const v = Number(n) || 0;
   if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
-  if (v >= 10_000) return `${Math.round(v / 1000)}K`;
-  if (v >= 1_000) return `${(v / 1000).toFixed(1).replace(/\.0$/, '')}K`;
+  if (v >= 10_000) return `${(v / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   return String(v);
 }
 
