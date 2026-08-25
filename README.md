@@ -18,7 +18,7 @@
 
 <div align="center">
 
-<img src="assets/player.svg" alt="Player card: level 21, score 847, 745 commits in the last year" width="900">
+<img src="assets/player.svg" alt="Player card: level 21, score 1244, 746 commits in the last year" width="900">
 
 </div>
 
@@ -46,7 +46,7 @@
 
 <div align="center">
 
-<img src="assets/grid.svg" alt="Contribution map: 847 contributions across 11 repositories in the last year" width="900">
+<img src="assets/grid.svg" alt="Contribution map: 1244 contributions across 11 repositories in the last year" width="900">
 
 </div>
 
