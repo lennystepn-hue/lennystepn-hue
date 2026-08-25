@@ -19,7 +19,7 @@
 
 <div align="center">
 
-<img src="assets/player.svg" alt="Player card: level 21, score 1244, active on 70 days in the last year" width="900">
+<img src="assets/player.svg" alt="Player card: level 22, score 1244, active on 70 days in the last year" width="900">
 
 </div>
 
@@ -39,7 +39,7 @@
 
 **▶ PLAY** &nbsp;&nbsp; [`schichtplaner`](https://github.com/lennystepn-hue/schichtplaner) · [`openclippy`](https://github.com/lennystepn-hue/openclippy) · [`butlr-openclaw-platform`](https://github.com/lennystepn-hue/butlr-openclaw-platform) · [`clawshield`](https://github.com/lennystepn-hue/clawshield) · [`agentcheck`](https://github.com/lennystepn-hue/agentcheck) · [`lenny-pet`](https://github.com/lennystepn-hue/lenny-pet)
 
-<sub>All 21 public repositories → [github.com/lennystepn-hue?tab=repositories](https://github.com/lennystepn-hue?tab=repositories)</sub>
+<sub>All 22 public repositories → [github.com/lennystepn-hue?tab=repositories](https://github.com/lennystepn-hue?tab=repositories)</sub>
 
 </div>
 
@@ -57,7 +57,7 @@
 
 ### ▸ About
 
-I build infrastructure for autonomous AI agents, and small products that get from idea to production fast. 21 public repositories in my first year on GitHub, most of them running somewhere real rather than sitting in a drawer.
+I build infrastructure for autonomous AI agents, and small products that get from idea to production fast. 22 public repositories in my first year on GitHub, most of them running somewhere real rather than sitting in a drawer.
 
 The work falls into two piles.
 
@@ -75,7 +75,7 @@ Building agent tooling in the open, and taking on selected freelance work throug
 
 <div align="center">
 
-<a href="https://github.com/lennystepn-hue/lennystepn-hue"><img src="assets/footer.svg" alt="Built with Claude Code. Template at github.com/lennystepn-hue/lennystepn-hue" width="900"></a>
+<a href="https://github.com/lennystepn-hue/attract-mode"><img src="assets/footer.svg" alt="Built with Claude Code. Template at github.com/lennystepn-hue/attract-mode" width="900"></a>
 
 </div>
 
@@ -88,7 +88,7 @@ Building agent tooling in the open, and taking on selected freelance work throug
   workflow in this repository. The artwork is drawn pixel by pixel from a hand-built
   5×7 font, with no image editor involved.
   <br>
-  <a href="HOW-IT-WORKS.md">How it works</a> · <a href="SETUP.md">Use this template for your own profile</a>
+  <a href="HOW-IT-WORKS.md">How it works</a> · <a href="https://github.com/lennystepn-hue/attract-mode">Use this for your own profile</a>
 </sub>
 
 </div>

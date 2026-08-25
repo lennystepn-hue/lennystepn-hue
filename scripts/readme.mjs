@@ -162,7 +162,7 @@ export function renderReadme(d, cfg) {
           `  5×7 font, with no image editor involved.\n` +
           `  <br>\n` +
           `  <a href="HOW-IT-WORKS.md">How it works</a> · ` +
-          `<a href="SETUP.md">Use this template for your own profile</a>\n` +
+          `<a href="https://github.com/${cfg.templateRepo}">Use this for your own profile</a>\n` +
           `</sub>`,
       ),
     );

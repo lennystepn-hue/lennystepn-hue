@@ -28,6 +28,11 @@ concurrency:
 
 jobs:
   refresh:
+    # Only run in an actual profile repository -- one whose name matches its
+    # owner. In the template repository itself, or in a fork someone made to
+    # work on the code, regenerating would overwrite that repository's own
+    # README with somebody's profile.
+    if: github.repository == format('{0}/{0}', github.repository_owner)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

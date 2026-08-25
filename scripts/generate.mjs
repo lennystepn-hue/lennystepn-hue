@@ -11,7 +11,7 @@
  * reproduce locally.
  */
 
-import { writeFile, mkdir } from 'node:fs/promises';
+import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fetchProfile, loadCached, saveCache } from './data.mjs';
 import { loadConfig } from './config.mjs';
@@ -28,6 +28,9 @@ import { renderReadme } from './readme.mjs';
 
 const ROOT = process.cwd();
 const ASSETS = path.join(ROOT, 'assets');
+
+/** Present in every README this script writes; see the overwrite guard below. */
+const GENERATED_MARKER = 'This file is generated.';
 
 const RENDERERS = {
   hero: renderHero,
@@ -105,9 +108,24 @@ async function main() {
     console.log(`  ${file.padEnd(12)} ${(Buffer.byteLength(svg) / 1024).toFixed(1)} KB`);
   }
 
-  await writeFile(path.join(ROOT, 'README.md'), renderReadme(data, cfg), 'utf8');
+  // Refuse to clobber a README nobody generated. Running the build inside the
+  // template repository, or in a repository whose README someone wrote by hand,
+  // would otherwise replace it with a profile and lose the original.
+  const readmePath = path.join(ROOT, 'README.md');
+  const existing = await readFile(readmePath, 'utf8').catch(() => null);
+  const isOurs = existing === null || existing.includes(GENERATED_MARKER);
+
+  if (isOurs || process.argv.includes('--force')) {
+    await writeFile(readmePath, renderReadme(data, cfg), 'utf8');
+  } else {
+    console.warn(
+      '• README.md was not written: it does not look generated, so it was left alone.\n' +
+        '  Pass --force to overwrite it anyway.',
+    );
+  }
+
   await writeFile(path.join(ROOT, 'preview.html'), previewPage(written, cfg.theme), 'utf8');
-  console.log(`• wrote README.md and preview.html  [theme: ${cfg.theme}]`);
+  console.log(`• wrote assets and preview.html  [theme: ${cfg.theme}]`);
 }
 
 main().catch((err) => {
