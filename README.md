@@ -18,7 +18,7 @@
 
 <div align="center">
 
-<img src="assets/player.svg" alt="Player card: level 21, score 847, 744 commits in the last year" width="900">
+<img src="assets/player.svg" alt="Player card: level 21, score 847, 745 commits in the last year" width="900">
 
 </div>
 
