@@ -35,9 +35,9 @@
 
 <div align="center">
 
-<img src="assets/select.svg" alt="Featured projects: schichtplaner, openclippy, butlr-openclaw-platform, clawshield, agentcheck, lenny-pet" width="900">
+<img src="assets/select.svg" alt="Featured projects: schichtplaner, openclippy, butlr-openclaw-platform, clawshield, inkpreview, agentcheck" width="900">
 
-**▶ PLAY** &nbsp;&nbsp; [`schichtplaner`](https://github.com/lennystepn-hue/schichtplaner) · [`openclippy`](https://github.com/lennystepn-hue/openclippy) · [`butlr-openclaw-platform`](https://github.com/lennystepn-hue/butlr-openclaw-platform) · [`clawshield`](https://github.com/lennystepn-hue/clawshield) · [`agentcheck`](https://github.com/lennystepn-hue/agentcheck) · [`lenny-pet`](https://github.com/lennystepn-hue/lenny-pet)
+**▶ PLAY** &nbsp;&nbsp; [`schichtplaner`](https://github.com/lennystepn-hue/schichtplaner) · [`openclippy`](https://github.com/lennystepn-hue/openclippy) · [`butlr-openclaw-platform`](https://github.com/lennystepn-hue/butlr-openclaw-platform) · [`clawshield`](https://github.com/lennystepn-hue/clawshield) · [`inkpreview`](https://github.com/lennystepn-hue/inkpreview) · [`agentcheck`](https://github.com/lennystepn-hue/agentcheck)
 
 <sub>All 22 public repositories → [github.com/lennystepn-hue?tab=repositories](https://github.com/lennystepn-hue?tab=repositories)</sub>
 
