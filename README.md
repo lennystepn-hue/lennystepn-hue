@@ -19,7 +19,7 @@
 
 <div align="center">
 
-<img src="assets/player.svg" alt="Player card: level 22, score 1197, active on 66 days in the last year" width="900">
+<img src="assets/player.svg" alt="Player card: level 23, score 1251, active on 69 days in the last year" width="900">
 
 </div>
 
@@ -39,7 +39,7 @@
 
 **▶ PLAY** &nbsp;&nbsp; [`schichtplaner`](https://github.com/lennystepn-hue/schichtplaner) · [`openclippy`](https://github.com/lennystepn-hue/openclippy) · [`butlr-openclaw-platform`](https://github.com/lennystepn-hue/butlr-openclaw-platform) · [`clawshield`](https://github.com/lennystepn-hue/clawshield) · [`inkpreview`](https://github.com/lennystepn-hue/inkpreview) · [`agentcheck`](https://github.com/lennystepn-hue/agentcheck)
 
-<sub>All 22 public repositories → [github.com/lennystepn-hue?tab=repositories](https://github.com/lennystepn-hue?tab=repositories)</sub>
+<sub>All 23 public repositories → [github.com/lennystepn-hue?tab=repositories](https://github.com/lennystepn-hue?tab=repositories)</sub>
 
 </div>
 
@@ -47,7 +47,7 @@
 
 <div align="center">
 
-<img src="assets/grid.svg" alt="Contribution map: 1197 contributions in the last year, active on 66 days" width="900">
+<img src="assets/grid.svg" alt="Contribution map: 1251 contributions in the last year, active on 69 days" width="900">
 
 </div>
 
@@ -57,7 +57,7 @@
 
 ### ▸ About
 
-I build infrastructure for autonomous AI agents, and small products that get from idea to production fast. 22 public repositories in my first year on GitHub, most of them running somewhere real rather than sitting in a drawer.
+I build infrastructure for autonomous AI agents, and small products that get from idea to production fast. 23 public repositories in my first year on GitHub, most of them running somewhere real rather than sitting in a drawer.
 
 The work falls into two piles.
 
