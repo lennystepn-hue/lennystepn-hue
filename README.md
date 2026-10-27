@@ -19,7 +19,7 @@
 
 <div align="center">
 
-<img src="assets/player.svg" alt="Player card: level 25, score 2466, active on 94 days in the last year" width="900">
+<img src="assets/player.svg" alt="Player card: level 25, score 2470, active on 94 days in the last year" width="900">
 
 </div>
 
@@ -35,9 +35,9 @@
 
 <div align="center">
 
-<img src="assets/select.svg" alt="Featured projects: schichtplaner, openclippy, butlr-openclaw-platform, cuttle-ai-screen-recorder, clawshield, inkpreview" width="900">
+<img src="assets/select.svg" alt="Featured projects: schichtplaner, openclippy, butlr-openclaw-platform, cuttle-ai-screen-recorder, clawshield, zack" width="900">
 
-**▶ PLAY** &nbsp;&nbsp; [`schichtplaner`](https://github.com/lennystepn-hue/schichtplaner) · [`openclippy`](https://github.com/lennystepn-hue/openclippy) · [`butlr-openclaw-platform`](https://github.com/lennystepn-hue/butlr-openclaw-platform) · [`cuttle-ai-screen-recorder`](https://github.com/lennystepn-hue/cuttle-ai-screen-recorder) · [`clawshield`](https://github.com/lennystepn-hue/clawshield) · [`inkpreview`](https://github.com/lennystepn-hue/inkpreview)
+**▶ PLAY** &nbsp;&nbsp; [`schichtplaner`](https://github.com/lennystepn-hue/schichtplaner) · [`openclippy`](https://github.com/lennystepn-hue/openclippy) · [`butlr-openclaw-platform`](https://github.com/lennystepn-hue/butlr-openclaw-platform) · [`cuttle-ai-screen-recorder`](https://github.com/lennystepn-hue/cuttle-ai-screen-recorder) · [`clawshield`](https://github.com/lennystepn-hue/clawshield) · [`zack`](https://github.com/lennystepn-hue/zack)
 
 <sub>All 25 public repositories → [github.com/lennystepn-hue?tab=repositories](https://github.com/lennystepn-hue?tab=repositories)</sub>
 
@@ -47,7 +47,7 @@
 
 <div align="center">
 
-<img src="assets/grid.svg" alt="Contribution map: 2466 contributions in the last year, active on 94 days" width="900">
+<img src="assets/grid.svg" alt="Contribution map: 2470 contributions in the last year, active on 94 days" width="900">
 
 </div>
 
