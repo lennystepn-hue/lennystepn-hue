@@ -19,7 +19,7 @@
 
 <div align="center">
 
-<img src="assets/player.svg" alt="Player card: level 23, score 2703, active on 108 days in the last year" width="900">
+<img src="assets/player.svg" alt="Player card: level 23, score 2708, active on 109 days in the last year" width="900">
 
 </div>
 
@@ -47,7 +47,7 @@
 
 <div align="center">
 
-<img src="assets/grid.svg" alt="Contribution map: 2703 contributions in the last year, active on 108 days" width="900">
+<img src="assets/grid.svg" alt="Contribution map: 2708 contributions in the last year, active on 109 days" width="900">
 
 </div>
 
